@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedro</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            overflow: hidden;
+            cursor: none; /* 기본 커서를 숨깁니다 */
+            transition: background-color 0.3s ease;
+        }
+        .circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            color: black;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .circle::before, .circle::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            z-index: -1;
+        }
+        .circle::before {
+            border-top-color: red;
+            border-right-color: yellow;
+            border-bottom-color: green;
+            border-left-color: blue;
+            animation: rotate 2s linear infinite;
+        }
+        .circle::after {
+            border-top-color: blue;
+            border-right-color: green;
+            border-bottom-color: yellow;
+            border-left-color: red;
+            animation: rotate-reverse 2s linear infinite;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes rotate-reverse {
+            from {
+                transform: rotate(360deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+        .circle:hover {
+            width: 700px;
+            height: 700px;
+            animation: pulsate 0.2s infinite alternate;
+            box-shadow: 0 0 20px 10px red, 0 0 40px 20px orange, 0 0 60px 30px yellow, 0 0 80px 40px green, 0 0 100px 50px blue, 0 0 120px 60px indigo, 0 0 140px 70px violet;
+        }
+        .circle:hover .text {
+            opacity: 0;
+        }
+        .text {
+            transition: opacity 0.3s ease;
+            font-weight: bold;
+        }
+        @keyframes pulsate {
+            0% {
+                transform: scale(1);
+                filter: blur(0px);
+            }
+            100% {
+                transform: scale(1.05);
+                filter: blur(5px);
+            }
+        }
+        .cursor-image {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            pointer-events: none; /* 마우스 이벤트가 이미지에 영향을 주지 않도록 설정 */
+        }
+        .inner-image {
+            position: absolute;
+            width: 700px; /* 4배 더 크게 변경 */
+            height: 700px; /* 4배 더 크게 변경 */
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 중앙에서 회전하도록 조정 */
+            display: none;
+        }
+        .circle:hover .inner-image {
+            display: block;
+            animation: rotate-inner 2s linear infinite;
+        }
+        @keyframes rotate-inner {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(-360deg);
+            }
+        }
+        @keyframes flash {
+            0% { background-color: black; }
+            20% { background-color: white; }
+            40% { background-color: black; }
+            60% { background-color: white; }
+            80% { background-color: white; }
+            100% { background-color: black; }
+        }
+        body.flashing {
+            animation: flash 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle">
+        <div class="text">Pedro</div>
+        <img src="../images/racoon.png" alt="Inner Image" class="inner-image">
+    </div>
+    <img src="../images/racoon.png" alt="Cursor Image" class="cursor-image" id="cursorImage">
+    <script>
+        document.addEventListener('mousemove', function(e) {
+            const cursorImage = document.getElementById('cursorImage');
+            cursorImage.style.left = e.pageX + 'px';
+            cursorImage.style.top = e.pageY + 'px';
+        });
+
+        const circle = document.querySelector('.circle');
+        circle.addEventListener('mouseover', function() {
+            document.body.classList.add('flashing');
+        });
+
+        circle.addEventListener('mouseout', function() {
+            document.body.classList.remove('flashing');
+        });
+    </script>
+</body>
+</html>
